@@ -1,0 +1,31 @@
+{
+  "button": {
+    "save": "Lưu lại",
+    "create": "Thêm mới",
+    "delete": "Xóa",
+    "reset": "Đặt lại",
+    "save_page": "Lưa lại trang",
+    "delete_multiple": "Xóa nhiều"
+  },
+
+  "index": {
+    "title": "Quản lý dữ liệu",
+    "table": {
+      "name": "Tên",
+      "email": "Email",
+      "created_at": "Ngày tạo",
+      "update_at": "Ngày cập nhập",
+      "status": "Trạng Thái",
+      "type": "loại"
+    },
+    "action": {
+      "view": "Xem",
+      "edit": "Cập nhập",
+      "delete": "Xóa"
+    }
+  },
+
+  "form": {},
+
+  "tree": {}
+}

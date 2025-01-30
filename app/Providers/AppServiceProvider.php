@@ -20,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $lang = session('lang', 'en');
+        app()->setLocale($lang);
         Vite::prefetch(concurrency: 3);
     }
 }

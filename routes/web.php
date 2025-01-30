@@ -1,9 +1,50 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::name('admin.')->group(function () {
+    // Route::prefix('files')->group(base_path('routes/file.php'));
+
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard')->defaults('sidebar', [
+        'display_name' => 'dashboard',
+    ]);
+
+    Route::module('users', UserController::class, [
+        'name' => 'user',
+        'index' => [
+            'sidebar' => [
+                'group' => 'users',
+                'display_name' => 'users',
+            ],
+        ]
+    ]);
+
+    Route::prefix('setting')->name('setting.')->group(function () {
+        Route::get('system', function () {
+            return Inertia::render('Settings/System');
+        })->name('system')->defaults('sidebar', [
+            'group' => 'settings',
+            'display_name' => 'system',
+        ]);
+    });
+
+    Route::module('roles', RoleController::class, [
+        'name' => 'role',
+        'create' => [
+            'sidebar' => [
+                'group' => 'settings',
+                'display_name' => 'roles',
+            ],
+        ]
+    ]);
+});
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -14,14 +55,5 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -1,0 +1,21 @@
+{
+  "name": "0132e282/file-manager",
+  "description": "A Laravel package for managing files efficiently, including upload, delete, and organization functionalities.",
+  "type": "library",
+  "require": {
+    "laravel/framework": "^8.0"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "ND\\FileManager\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "NGUYEN DEV",
+      "email": "nguyenhoangphuc201122@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev"
+}

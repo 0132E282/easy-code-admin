@@ -1,0 +1,19 @@
+{
+  "sidebar.group": {
+    "users": "Người dùng",
+    "settings": "Cài đặt",
+    "dashboard": "Thống kê"
+  },
+
+  "sidebar.icon": {
+    "users": "Users",
+    "settings": "Settings2",
+    "dashboard": "ChartArea"
+  },
+
+  "sidebar.item": {
+    "users": "Người dùng",
+    "roles": "Phân quyền",
+    "system": "Hệ thống"
+  }
+}
