@@ -82,6 +82,10 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         array (
             'Opis\\Closure\\' => 13,
         ),
+        'N' => 
+        array (
+            'ND\\FileManager\\' => 15,
+        ),
         'M' => 
         array (
             'Monolog\\' => 8,
@@ -98,10 +102,6 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         array (
             'Illuminate\\Support\\' => 19,
             'Illuminate\\' => 11,
-        ),
-        'H' => 
-        array (
-            'Hoangphuc01975\\FileManager\\' => 27,
         ),
         'G' => 
         array (
@@ -127,6 +127,10 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         'B' => 
         array (
             'Brick\\Math\\' => 11,
+        ),
+        'A' => 
+        array (
+            'App\\' => 4,
         ),
     );
 
@@ -271,6 +275,10 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
         ),
+        'ND\\FileManager\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
@@ -303,10 +311,6 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         'Illuminate\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
-        ),
-        'Hoangphuc01975\\FileManager\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
         'GrahamCampbell\\ResultType\\' => 
         array (
@@ -347,6 +351,10 @@ class ComposerStaticInit0ad27a42a4723707fd263a2a95bd7bcc
         'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 

@@ -1,8 +1,14 @@
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
-import { File, FileIcon, FileSpreadsheet, FileText, Folder } from 'lucide-react'
+import { Folder } from 'lucide-react'
 import { useState } from 'react'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { router } from '@inertiajs/react'
+import { Form } from '@/components/form/Form'
+import { useForm } from 'react-hook-form'
+import { FormField } from '@/components/form/FormField'
+import { toast } from '@/hooks/use-toast'
+import FileItem from '@/components/filemanager/file-item'
 
 type FilesProps = {
   directories: {
@@ -10,7 +16,6 @@ type FilesProps = {
     id: number | string
     path: string
   }[]
-
   files: {
     name: string
     id: number | string
@@ -18,57 +23,96 @@ type FilesProps = {
   }[]
 }
 
-const FileManager = function ({ directories, files, treeDirectories }: FilesProps) {
+const FileManager = function ({ directories, files }: FilesProps) {
   const [filed, setFiled] = useState<string[]>([])
-  const [selectedFolder, setSelectedFolder] = useState<string | null>(null)
+  const [openModeCreate, setOpenCreate] = useState<boolean>(false)
+  const form = useForm()
 
-  const handleClickFolder = function (directorie) {
-    setSelectedFolder(prevFolder => (prevFolder === directorie.id.toString() ? null : directorie.id.toString()))
+  const handleDoubleClickFolder = (directorie: { path: string | number }) => {
+    router.get(route('admin.file_manager.index', { path: directorie.path }))
   }
 
-  const handleClickFile = function (file: { id: string | number }) {
-    setFiled(prevFiled => (prevFiled.includes(file.id.toString()) ? prevFiled.filter(f => f !== file.id.toString()) : [...prevFiled, file.id.toString()]))
+  const handleClickFile = (event: React.MouseEvent, file: { path: string | number }) => {
+    if (event.ctrlKey) {
+      setFiled(prevFiled => (prevFiled.includes(file.path.toString()) ? prevFiled.filter(f => f !== file.path.toString()) : [...prevFiled, file.path.toString()]))
+    } else {
+      setFiled([file.path.toString()])
+    }
+  }
+  const handleDelete = async (data: any) => {
+    try {
+      await router.delete(route('admin.file_manager.delete', {path: data.path }))
+      toast({
+        title: 'Success',
+        description: 'Your request was successful.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong.',
+      })
+    }
+  }
+  const handleSubmitCreate = async (data: any) => {
+    try {
+      data.path = route().params.path
+      await router.post(route('admin.file_manager.create', { type: 'folder' }), data)
+      setOpenCreate(false)
+      toast({
+        title: 'Success',
+        description: 'Your request was successful.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong.',
+      })
+    }
   }
 
   return (
     <div className='flex flex-col h-[100vh] w-[100vw]'>
       <div className='flex gap-2 border-b py-4 px-5 justify-end items-end'>
         <Button>Tải lên</Button>
+        <Dialog open={openModeCreate} onOpenChange={setOpenCreate}>
+          <DialogTrigger>
+            <Button variant='outline'>Create file</Button>
+          </DialogTrigger>
+          <DialogContent className='sm:max-w-[425px]'>
+            <DialogHeader>
+              <DialogTitle>Create file</DialogTitle>
+            </DialogHeader>
+            <div className='grid gap-4 py-4'>
+              <Form id='create_file' form={form} onSubmit={handleSubmitCreate}>
+                <FormField form={form} label='Name' name='name' />
+              </Form>
+            </div>
+            <DialogFooter>
+              <Button type='submit' form='create_file'>
+                Save changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <Button>Xóa</Button>
-        <Button disabled={Boolean(selectedFolder)}>Chọn</Button>
+        <Button>Chọn</Button>
       </div>
-      <div className='w-full flex flex-1 p-4 gap-4'>
-        {directories.map(directorie => {
-          return (
-            <div key={directorie?.id} onClick={() => handleClickFolder(directorie)} className='flex flex-col items-center space-y-2 w-24 h-28 cursor-pointer'>
-              <div className={`p-4 ${selectedFolder === directorie.id.toString() ? 'border-2 border-green-500' : 'border border-gray-300'} flex justify-center items-center bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition duration-300`}>
-                <Folder className='w-10 h-10 text-gray-700' />
-              </div>
-              <div className='text-center text-sm text-gray-700'>{directorie?.name ?? ''}</div>
-            </div>
-          )
-        })}
-        {files.map(file => {
-          const fileExtension = file.path?.split('.').pop().toLowerCase()
-          let Icon
-          if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
-            Icon = <img src={'/storage/' + file.path} alt='Image' className='w-10 h-10' />
-          } else if (['pdf'].includes(fileExtension)) {
-            Icon = <FileIcon className='w-10 h-10 text-red-500' />
-          } else if (['txt', 'doc', 'docx'].includes(fileExtension)) {
-            Icon = <FileText className='w-10 h-10 text-blue-500' />
-          } else if (['xls', 'xlsx'].includes(fileExtension)) {
-            Icon = <FileSpreadsheet className='w-10 h-10 text-green-500' />
-          } else {
-            Icon = <File className='w-10 h-10 text-gray-700' />
-          }
-          return (
-            <div key={file.id} onClick={() => handleClickFile(file)} className='flex flex-col items-center space-y-2 w-24 h-28 cursor-pointer'>
-              <div className={`p-4 ${filed.includes(file.id.toString()) ? 'border-2 border-green-500' : 'border border-gray-300'} flex justify-center items-center bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition duration-300`}>{Icon}</div>
-              <div className='text-center text-sm text-gray-700'>{file.name}</div>
-            </div>
-          )
-        })}
+      <div className='w-full flex flex-wrap items-start justify-start p-4 gap-4'>
+        {directories.length === 0 && files.length === 0 ? (
+          <div className='w-full m-auto flex flex-col items-center justify-center text-center text-gray-500'>
+            <Folder className='w-20 h-20 text-gray-400 mb-4' />
+            <span>Không có file hoặc thư mục nào.</span>
+          </div>
+        ) : (
+          <>
+            {directories.map(directorie => (
+              <FileItem handleDoubleClickFolder={() => handleDoubleClickFolder(directorie)} file={directorie} key={directorie.id} type='folder' />
+            ))}
+            {files.map(file => (
+              <FileItem handleClickFile={(event: React.MouseEvent, file) => handleClickFile(event, file)} checked={filed.includes(file.path)} file={file} key={file.id} type='file' />
+            ))}
+          </>
+        )}
       </div>
     </div>
   )

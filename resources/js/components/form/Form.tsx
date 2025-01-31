@@ -7,12 +7,13 @@ export type TypeFormSubmit<T extends FieldValues> = {
   children: ReactNode
   form: UseFormReturn<T>
   className?: string
+  id?: string
 }
 
-export const Form = <T extends FieldValues>({ onSubmit, children, form, className }: TypeFormSubmit<T>) => {
+export const Form = <T extends FieldValues>({ onSubmit, children, form, className, id }: TypeFormSubmit<T>) => {
   return (
     <FormSadcn {...form}>
-      <form className={className} onSubmit={form.handleSubmit(onSubmit)}>
+      <form id={id} className={className} onSubmit={form.handleSubmit(onSubmit)}>
         {children}
       </form>
     </FormSadcn>

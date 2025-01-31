@@ -60,9 +60,9 @@ type TypeFormField = {
   description?: string
   label?: string
   name: string
-  type: string
-  className?: string
+  type?: string
   form: UseFormReturn<any>
+  className?: string
   onChange?: any
   value?: number | string
   checked?: boolean
@@ -79,18 +79,18 @@ export const FormField = ({ className, options, description, label, value, name,
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className={` ${classNameCustom[type] || ''}`}>
+          <FormItem className={` ${classNameCustom[type ?? 'text'] || ''}`}>
             <FormLabel className='cursor-pointer'>{label}</FormLabel>
             {options && Array.isArray(options) ? (
               <div className='flex'>
                 {options.map(option => (
-                  <FiledInput key={option?.id} type={type} {...field} option={option} />
+                  <FiledInput key={option?.id} type={type ?? 'text'} {...field} option={option} />
                 ))}
               </div>
             ) : (
               <>
                 <FormControl onChange={onChange} {...props}>
-                  <FiledInput type={type} {...field} />
+                  <FiledInput type={type ?? 'text'} {...field} />
                 </FormControl>
               </>
             )}

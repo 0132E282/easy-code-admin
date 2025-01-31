@@ -8,6 +8,7 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
+      "App\\": "app/",
       "ND\\FileManager\\": "src/"
     }
   },
@@ -17,5 +18,15 @@
       "email": "nguyenhoangphuc201122@gmail.com"
     }
   ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ND\\FileManager\\FileManagerServiceProvider"
+      ],
+      "aliases": {
+        "Filemanager": "ND\\FileManager\\FileManagerServiceProvider"
+      }
+    }
+  },
   "minimum-stability": "dev"
 }

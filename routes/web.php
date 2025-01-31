@@ -8,7 +8,6 @@ use Inertia\Inertia;
 
 Route::name('admin.')->group(function () {
     // Route::prefix('files')->group(base_path('routes/file.php'));
-
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard')->defaults('sidebar', [

@@ -129,7 +129,6 @@
       tabGroups[i].setAttribute('data-processed', 'true')
     }
   })()
-
   ;(function createToggles() {
     var toggles = document.querySelectorAll('.sf-toggle:not([data-processed=true])')
 
@@ -204,7 +203,6 @@
       toggles[i].setAttribute('data-processed', 'true')
     }
   })()
-
   ;(function createFilters() {
     document.querySelectorAll('[data-filters] [data-filter]').forEach(function (filter) {
       var filters = filter.closest('[data-filters]'),

@@ -31,7 +31,7 @@
   "autoload": {
     "psr-4": {
       "App\\": "app/",
-      "0132e282\\FileManager\\": "packages/FileManager/src",
+      "ND\\FileManager\\": "packages/FileManager/src",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
     }
@@ -39,7 +39,7 @@
   "autoload-dev": {
     "psr-4": {
       "Tests\\": "tests/",
-      "0132e282\\FileManager\\": "packages/FileManager/src"
+      "ND\\FileManager\\": "packages/FileManager/src"
     }
   },
   "scripts": {
