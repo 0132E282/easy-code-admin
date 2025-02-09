@@ -1,19 +1,14 @@
 import { File, FileIcon, FileSpreadsheet, FileText, Folder } from 'lucide-react'
 import * as ContextMenu from '@radix-ui/react-context-menu'
 import { useState } from 'react'
-
-type FileProp = {
-  id: number | string
-  name: string
-  path: string
-}
+import { File as FileType } from '@/model'
 
 type FileItemProps = {
-  file: FileProp
+  file: FileType
   checked?: boolean
   type?: 'file' | 'folder'
-  handleClickFile?: (event: React.MouseEvent, file: FileProp) => void
-  handleDoubleClickFolder?: (file: FileProp) => void
+  handleClickFile?: (event: React.MouseEvent, file: FileType) => void
+  handleDoubleClickFolder?: (file: FileType) => void
   onDelete?: (id: number | string) => void
   onRename?: (id: number | string, newName: string) => void
 }

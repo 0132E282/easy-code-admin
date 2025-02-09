@@ -1,15 +1,14 @@
-import React, { ForwardedRef } from 'react'
+import React, { ForwardedRef, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage, FormField as FormFieldUiShadcn } from '../ui/form'
 import { Input } from '../ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Check } from 'lucide-react'
 import { Image } from '../ui/image'
-
+import { MultiSelect } from '../ui/multiple-selector'
 type Option = {
-  id: number | string
-  value: number | string
-  label: number | string
+  value: string
+  label: string
+  id: string
 }
 
 type FiledInputProps = {
@@ -17,10 +16,12 @@ type FiledInputProps = {
   className?: string
   type: string
   onChange?: (value: any) => void
-  option?: Option
+  options?: Option[]
+  placeholder?: string
 }
 
-const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, FiledInputProps>(({ option, className, type, ...field }, ref) => {
+const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, FiledInputProps>(({ placeholder, options, className, type, ...field }, ref) => {
+  const [selected, setSelected] = useState<string[]>()
   switch (type) {
     case 'image':
       return (
@@ -33,7 +34,7 @@ const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, File
     case 'checkbox':
       return <Checkbox className={`cursor-pointer !mt-0 ms-2 ${className}`} value={field.value} onCheckedChange={field?.onChange} {...field} />
     case 'checkbox_list':
-      return (
+      return options?.map(option => (
         <FormItem className='flex items-center justify-start flex-1'>
           <FormControl>
             <Checkbox
@@ -48,7 +49,9 @@ const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, File
           </FormControl>
           <FormLabel className='text-sm !mt-0 !mb-1 font-normal cursor-pointer'>{option?.label}</FormLabel>
         </FormItem>
-      )
+      ))
+    case 'multiple-select':
+      return <MultiSelect options={options ?? []} onValueChange={setSelected} defaultValue={selected} placeholder='Select frameworks' variant='inverted' animation={2} maxCount={3} />
     default:
       return <Input type={type} {...field} ref={ref as React.Ref<HTMLInputElement>} />
   }
@@ -67,9 +70,10 @@ type TypeFormField = {
   value?: number | string
   checked?: boolean
   options?: Array<Option>
+  placeholder?: string
 }
 
-export const FormField = ({ className, options, description, label, value, name, form, type, onChange, ...props }: TypeFormField) => {
+export const FormField = ({ placeholder, className, options, description, label, value, name, form, type, onChange, ...props }: TypeFormField) => {
   const classNameCustom: Record<string, string> = {
     checkbox: 'items-center flex justify-start',
   }
@@ -83,9 +87,7 @@ export const FormField = ({ className, options, description, label, value, name,
             <FormLabel className='cursor-pointer'>{label}</FormLabel>
             {options && Array.isArray(options) ? (
               <div className='flex'>
-                {options.map(option => (
-                  <FiledInput key={option?.id} type={type ?? 'text'} {...field} option={option} />
-                ))}
+                <FiledInput type={type ?? 'text'} {...field} options={options} placeholder={placeholder} />
               </div>
             ) : (
               <>

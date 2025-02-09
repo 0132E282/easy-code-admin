@@ -2,7 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\InertiaServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
     ND\FileManager\FileManagerServiceProvider::class,
+    ND\Core\Providers\RouteServiceProvider::class,
 ];

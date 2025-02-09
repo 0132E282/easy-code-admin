@@ -1,0 +1,25 @@
+{
+  "name": "0132e282/core",
+  "autoload": {
+    "psr-4": {
+      "ND\\Core\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "NGUYEN DEV",
+      "email": "nguyenhoangphuc201122@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ND\\Core\\Providers\\RouteServiceProvider"
+      ],
+      "aliases": {
+        "RouteServiceProvider": "ND\\Core\\Providers\\RouteServiceProvider"
+      }
+    },
+    "minimum-stability": "dev"
+  }
+}

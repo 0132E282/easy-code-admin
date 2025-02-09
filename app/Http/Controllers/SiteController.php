@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Support\Facades\File;
+use Inertia\Inertia;
 
 class SiteController extends Controller
 {
@@ -33,5 +34,9 @@ class SiteController extends Controller
             }
         }
         return response()->json($translations);
+    }
+    function fileManagers()
+    {
+        return Inertia::render('Files/Index');
     }
 }

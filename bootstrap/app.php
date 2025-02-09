@@ -16,9 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
-        $middleware->alias([
-            'set.sidebar' => \App\Http\Middleware\SetSidebarRoute::class,
-        ]);
         $middleware->api(append: []);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -4,81 +4,75 @@ namespace ND\FileManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 use Illuminate\Support\Facades\File;
+use ND\FileManager\Services\FileService;
 
 class FileManagerController extends Controller
 {
+    public $fileService;
+    function __construct()
+    {
+        $this->fileService = FileService::getService('storage');
+    }
+
     public function index(Request $request)
     {
         $path = $request->path ?? '';
-        $directories = collect(Storage::disk('public')->directories($path))
-            ->filter(function ($directory) {
-                return !str_starts_with(basename($directory), '.');
-            })
-            ->map(function ($directory, $index) {
-                return [
-                    'id' => $index,
-                    'name' => basename($directory),
-                    'path' => $directory,
-                ];
-            })
-            ->values()
-            ->toArray();
-
-        $files = collect(Storage::disk('public')->files($path))
-            ->filter(function ($file) {
-                return !str_starts_with(basename($file), '.');
-            })
-            ->map(function ($file, $index) {
-                return [
-                    'id' => $index,
-                    'name' => basename($file),
-                    'path' => $file,
-                ];
-            })
-            ->values()
-            ->toArray();
+        $files = $this->fileService->all($path);
 
         return Inertia::render('Files/File-manager', [
-            'directories' => $directories,
             'files' => $files
         ]);
     }
+
     public function create(Request $request)
     {
         try {
-            $request->validate([
-                'name' => 'required|string',
+            $this->fileService->createFolder($request->path, $request->name);
+            return response()->json([
+                'type' =>  'success',
+                'message' =>  'Tệp đã được xóa thành công',
             ]);
-
-            $path = $request->path;
-            $name = $request->name;
-            $fullPath = storage_path('app/public/' . $path . '/' . $name);
-
-            if (!File::exists($fullPath)) {
-                if (File::makeDirectory($fullPath, 0755, true)) {
-                    return back();
-                } else {
-                    return  back();
-                }
-            }
-
-            return back();
         } catch (\Exception $e) {
-            return
-                back();
+            return back()->with('message', [
+                'type' =>  'success',
+                'text' =>  'Tệp đã được xóa thành công',
+            ]);
         }
     }
-    public function upload() {}
+    public function upload(Request $request)
+    {
+        try {
+            $filePath = $this->fileService->upload($request->path, $request->file('files'));
+            return response()->json([
+                'type' => 'success',
+                'message' => count($filePath) . ' file(s) uploaded successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'type' => 'success',
+                'text' => 'File has been successfully deleted.',
+            ]);
+        }
+    }
+
     public function delete(Request $request)
     {
-        dd($request->all());
-        return response()->json([
-            'message' => 'File deleted successfully',
-        ]);
+        try {
+            foreach ($request->input('files') as $file) {
+                $this->fileService->delete($file);
+            }
+            return response()->json([
+                'type' =>  'success',
+                'message' =>  'Tệp đã được xóa thành công',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'text' =>  'Tệp đã được xóa thành công',
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
-    public function click() {}
 }

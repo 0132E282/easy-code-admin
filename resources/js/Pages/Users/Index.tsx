@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import IndexPage from '@/components/page/index-page'
 import { User } from '@/types'
 import { ColumnsTable } from '@/components/page'
-import { ColumnTable } from '@/model'
+import { ColumnTable } from '@/types/pages'
 
 type IndexUserProp = {
   data: any
@@ -12,7 +12,7 @@ type IndexUserProp = {
 const Index = function ({ data, columns }: IndexUserProp) {
   return (
     <AuthenticatedLayout>
-      <IndexPage<User[]> data={data} columns={ColumnsTable<User>({ columnsTable: columns })} />
+      <IndexPage<User[]> data={data.data} columns={ColumnsTable<User[]>({ columnsTable: columns })} />
     </AuthenticatedLayout>
   )
 }

@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 
 export type FormLayoutProps<T extends FieldValues> = PropsWithChildren & {
   form: UseFormReturn<T>
+  container: string
 }
 
 function createRouteName(name: string) {
@@ -19,7 +20,7 @@ function createRouteName(name: string) {
   return routeSegments.join('.')
 }
 
-const FormLayout = <T extends FieldValues>({ children, form }: FormLayoutProps<T>) => {
+const FormLayout = <T extends FieldValues>({ children, form, container }: FormLayoutProps<T>) => {
   const { t } = useTranslation('page')
   const handleSubmit = async (data: T) => {
     try {
@@ -66,33 +67,34 @@ const FormLayout = <T extends FieldValues>({ children, form }: FormLayoutProps<T
       },
     })
   }
-
   return (
     <AuthenticatedLayout>
-      <Form form={form} onSubmit={handleSubmit}>
-        <Card className='p-4 mb-4'>
-          <Button type='submit'>{t('button.save')}</Button>
-          {route().current()?.includes('edit') && (
-            <>
-              <Button className='ml-2' type='button'>
-                <Link href={route(createRouteName('create'))} className='ml-2'>
-                  {t('button.create')}
-                </Link>
-              </Button>
-              <Button className='ml-2' type='button' onClick={handleSubmitDelete}>
-                {t('button.delete')}
-              </Button>
-            </>
-          )}
-          <Button className='ml-2'>{t('button.save_page')}</Button>
-          <Button className='ml-2' type='button'>
-            <Link href={route(route().current() ?? '', route().params)} className='ml-2'>
-              {t('button.reset')}
-            </Link>
-          </Button>
-        </Card>
-        {children}
-      </Form>
+      <div className='w-full container mx-auto'>
+        <Form form={form} onSubmit={handleSubmit}>
+          <Card className='p-4 mb-4'>
+            <Button type='submit'>{t('button.save')}</Button>
+            {route().current()?.includes('edit') && (
+              <>
+                <Button className='ml-2' type='button'>
+                  <Link href={route(createRouteName('create'))} className='ml-2'>
+                    {t('button.create')}
+                  </Link>
+                </Button>
+                <Button className='ml-2' type='button' onClick={handleSubmitDelete}>
+                  {t('button.delete')}
+                </Button>
+              </>
+            )}
+            <Button className='ml-2'>{t('button.save_page')}</Button>
+            <Button className='ml-2' type='button'>
+              <Link href={route(route().current() ?? '', route().params)} className='ml-2'>
+                {t('button.reset')}
+              </Link>
+            </Button>
+          </Card>
+          {children}
+        </Form>
+      </div>
     </AuthenticatedLayout>
   )
 }

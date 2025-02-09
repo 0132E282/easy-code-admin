@@ -49,7 +49,7 @@ export function NavMain({ items }: NavMainProps) {
               </Collapsible>
             ) : (
               <SidebarMenuButton asChild>
-                <Link href={item.route_name || '#'}>
+                <Link href={route(item.route_name) || '#'}>
                   {/* Uncomment and customize the icon logic if needed */}
                   {item.icon && Lucide[t(item.icon) as keyof typeof Lucide] && React.createElement((Lucide[t(item.icon) as keyof typeof Lucide] as React.ComponentType<LucideIcon>) ?? '')}
                   <span>{t(item.display_name)}</span>

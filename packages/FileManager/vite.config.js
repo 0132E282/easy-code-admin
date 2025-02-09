@@ -1,15 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'public/js', // Đặt thư mục output cho các file JS biên dịch
+    outDir: path.resolve(__dirname, '../../public/js'),
     emptyOutDir: true,
   },
   resolve: {
     alias: {
-      '@': '/resources/js',
+      '@': path.resolve(__dirname, './src'),
     },
+  },
+  server: {
+    port: 5173,
+    host: 'localhost',
+    strictPort: true,
   },
 })

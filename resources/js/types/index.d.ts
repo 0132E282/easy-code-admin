@@ -10,3 +10,9 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     user: User
   }
 }
+
+export type ResponseData<T = unknown> = {
+  message: string
+  data?: T
+  type?: 'success' | 'error'
+}

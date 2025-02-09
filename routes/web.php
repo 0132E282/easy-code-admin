@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::name('admin.')->group(function () {
-    // Route::prefix('files')->group(base_path('routes/file.php'));
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard')->defaults('sidebar', [
@@ -42,6 +42,8 @@ Route::name('admin.')->group(function () {
             ],
         ]
     ]);
+
+    Route::get('file-managers', [SiteController::class, 'fileManagers'])->name('file-managers')->setSidebar('file-managers');
 });
 
 

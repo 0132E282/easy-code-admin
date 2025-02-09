@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -34,6 +35,13 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'flash' => [
+                'message' => fn() => session()->get('message')
+            ],
+            'route' => [
+                'prefix' => trim(Route::getCurrentRoute()->getPrefix(), '/'),
+            ],
+            'sidebar' => Route::getSidebar(),
         ];
     }
 }
