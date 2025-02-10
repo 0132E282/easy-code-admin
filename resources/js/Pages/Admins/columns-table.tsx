@@ -1,25 +1,46 @@
 'use client'
-
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
 import { ColumnDef, Row, Table } from '@tanstack/react-table'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
-import { ColumnTable } from '@/model'
+import { ColumnTable} from '@/types/page'
 import { useTranslation } from 'react-i18next'
+import { Link, router } from '@inertiajs/react'
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from '@/components/ui/alert-dialog'
 
 export type Payment = {
   id: string
   name: number
   status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
+  email: string,
+  actions: any
 }
-const isValidImageUrl = (url: string) => {
-  return /\.(jpeg|jpg|gif|png|svg|webp)$/i.test(url)
-}
+
+const isValidImageUrl = (url: string) => /\.(jpeg|jpg|gif|png|svg|webp)$/i.test(url)
+
 export const ColumnsTable = <T,>({ columnsTable = [] }: { columnsTable: ColumnTable[] }): ColumnDef<T>[] => {
   const { t } = useTranslation('page')
+  const routeNameEdit = route()?.current()?.replace(/[^.]+$/, 'edit')
+  const routeNameDelete = route()?.current()?.replace(/[^.]+$/, 'delete')
+
+  function handDeleteItem(data) {
+    if (routeNameDelete) {
+       router.delete(route(routeNameDelete, { 'id': data.id }))
+    }
+  }
+
   const columns = columnsTable.map(columnTableItem => ({
     accessorKey: columnTableItem.accessorKey ?? '',
     header: ({ column }: { column: any }) => {
@@ -70,9 +91,30 @@ export const ColumnsTable = <T,>({ columnsTable = [] }: { columnsTable: ColumnTa
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <DropdownMenuItem>{t('index.action.view')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('index.action.edit')}</DropdownMenuItem>
-              <DropdownMenuItem>{t('index.action.delete')}</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={routeNameEdit && data?.id ? route(routeNameEdit, { id: data?.id }) : ''}>
+                  {t('index.action.edit')}
+                </Link>
+              </DropdownMenuItem>
+               <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <DropdownMenuItem className='cursor-pointer'  onSelect={(e) => e.preventDefault()} >
+                        {t('index.action.delete')}
+                    </DropdownMenuItem>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t('action.columns.delete.title')}</AlertDialogTitle>
+                      <AlertDialogDescription>
+                         {t('action.columns.delete.message')}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={()=>handDeleteItem(data)}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         )

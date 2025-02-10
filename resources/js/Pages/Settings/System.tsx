@@ -1,5 +1,5 @@
 import { Form } from '@/components/form/Form'
-import { FormField } from '@/components/form/FormField'
+import { FormField } from '@/components/form/Form-field'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { SettingSystem } from '@/model/settings'
 import { useForm } from 'react-hook-form'

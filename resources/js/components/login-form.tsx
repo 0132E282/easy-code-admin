@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Form } from './form/Form'
-import { FormField } from './form/FormField'
+import { FormField } from './form/Form-field'
 import { useForm } from 'react-hook-form'
 
 const formSchema = z.object({

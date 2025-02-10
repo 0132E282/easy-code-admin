@@ -62,3 +62,8 @@ export type Relationships_view = Record<
     options: Option[]
   }
 >
+
+export type TablePageView = {
+  filter?: []
+  columns: ColumnTable[]
+}

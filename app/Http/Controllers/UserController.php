@@ -11,12 +11,20 @@ class UserController extends Controller
     public $model = User::class;
 
     public $relationships = ['roles'];
+    public $search = ['name', 'email'];
 
     public $index = [
-        'columns' => ['name', 'email', 'created_at']
+        'columns' => ['name', 'email', 'created_at'],
+        'filter' => [
+            'created_at' => ['type' => 'date_range'],
+        ],
+        'views' => [
+            'page' => 'table',
+        ]
     ];
 
     public $form = [
+        'relationships' => ['roles'],
         'views' => [
             'page' => 'form',
             'container' => 'ms',

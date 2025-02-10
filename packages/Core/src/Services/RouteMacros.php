@@ -33,7 +33,7 @@ class RouteMacros
                         ->where('id', '[0-9]+')
                         ->name('edit');
 
-                    FacadesRoute::delete('delete', [$controller, 'delete'])
+                    FacadesRoute::delete('delete/{id?}', [$controller, 'delete'])
                         ->where('id', '[0-9]+')
                         ->name('delete');
                 });

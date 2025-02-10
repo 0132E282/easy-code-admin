@@ -16,3 +16,21 @@ export type ResponseData<T = unknown> = {
   data?: T
   type?: 'success' | 'error'
 }
+interface PaginationLinks {
+  [key: string]: string
+}
+
+export type Data<T = unknown> = {
+  data: T[]
+  perPage: number
+  currentPage: number
+  path: string
+  query: Record<string, any>
+  fragment: string | null
+  pageName: string
+  onEachSide: number
+  options: Record<string, any>
+  total: number
+  lastPage: number
+  links?: PaginationLinks
+}

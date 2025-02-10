@@ -11,14 +11,14 @@ import { useTranslation } from 'react-i18next'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[],
+  currentRoute: string,
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({currentRoute, columns, data }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const { route: routePage } = usePage().props
   const { t } = useTranslation('page')
   const table = useReactTable({
     data,
@@ -36,7 +36,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       columnVisibility,
     },
   })
-  const routeModule = route().current()?.split('.').slice(0, -1).join('.')
+  const routeModule = currentRoute?.split('.').slice(0, -1).join('.')
   return (
     <div>
       <div className='flex items-center py-4'>
