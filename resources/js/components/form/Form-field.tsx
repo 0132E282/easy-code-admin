@@ -5,6 +5,11 @@ import { Input } from '../ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Image } from '../ui/image'
 import { MultiSelect } from '../ui/multiple-selector'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '../ui/textarea'
+
 type Option = {
   value: string
   label: string
@@ -21,7 +26,6 @@ type FiledInputProps = {
 }
 
 const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, FiledInputProps>(({ placeholder, options, className, type, ...field }, ref) => {
-  const [selected, setSelected] = useState<string[]>()
   switch (type) {
     case 'image':
       return (
@@ -30,10 +34,10 @@ const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, File
         </div>
       )
     case 'textarea':
-      return <textarea {...field} ref={ref as React.Ref<HTMLTextAreaElement>} />
+      return <Textarea {...field} ref={ref as React.Ref<HTMLTextAreaElement>} />
     case 'checkbox':
       return <Checkbox className={`cursor-pointer !mt-0 ms-2 ${className}`} value={field.value} onCheckedChange={field?.onChange} {...field} />
-    case 'checkbox_list':
+    case 'checkbox-list':
       return options?.map(option => (
         <FormItem className='flex items-center justify-start flex-1'>
           <FormControl>
@@ -50,10 +54,40 @@ const FiledInput = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, File
           <FormLabel className='text-sm !mt-0 !mb-1 font-normal cursor-pointer'>{option?.label}</FormLabel>
         </FormItem>
       ))
+    case 'radio-list':
+      return (
+        <FormItem className='flex items-center justify-start flex-1'>
+          <FormControl>
+            <RadioGroup defaultValue='comfortable flex'>
+              {options?.map((option, index) => (
+                <div className='flex items-center space-x-2'>
+                  <RadioGroupItem value={option.value} id='r1' />
+                  <Label htmlFor='r1'>{option.label || option.value}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </FormControl>
+          <FormLabel className='text-sm !mt-0 !mb-1 font-normal cursor-pointer'>{field?.label}</FormLabel>
+        </FormItem>
+      )
     case 'multiple-select':
-      return <MultiSelect options={options ?? []} onValueChange={setSelected} defaultValue={selected} placeholder='Select frameworks' variant='inverted' animation={2} maxCount={3} />
+      const data = field.value?.map((item: Option) => {
+        return typeof item === 'object' ? (item.id ?? item.title ?? item.name) : item
+      })
+      return (
+        <MultiSelect options={options ?? []} onValueChange={(value: string[]) => field.onChange?.(value)} defaultValue={Array.isArray(field.value) ? data : []} placeholder='Select frameworks' variant='inverted' animation={2} maxCount={3} {...field} />
+      )
+    case 'select':
+      return (
+        <Select>
+          <SelectTrigger className='w-full'>
+            <SelectValue placeholder={field.placeholder || field.name || 'select'} />
+          </SelectTrigger>
+          <SelectContent>{options?.map(option => <SelectItem value={option.value}>{option.label || option.value} </SelectItem>)}</SelectContent>
+        </Select>
+      )
     default:
-      return <Input type={type} {...field} ref={ref as React.Ref<HTMLInputElement>} />
+      return <Input value={field.value ?? ''} type={type} {...field} ref={ref as React.Ref<HTMLInputElement>} />
   }
 })
 

@@ -11,11 +11,11 @@ import { useTranslation } from 'react-i18next'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[],
-  currentRoute: string,
+  data: TData[]
+  currentRoute: string
 }
 
-export function DataTable<TData, TValue>({currentRoute, columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ filter, columns, data }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -36,18 +36,20 @@ export function DataTable<TData, TValue>({currentRoute, columns, data }: DataTab
       columnVisibility,
     },
   })
-  const routeModule = currentRoute?.split('.').slice(0, -1).join('.')
   return (
     <div>
-      <div className='flex items-center py-4'>
-        <Input placeholder='Filter emails...' value={table.getColumn('email')?.getFilterValue() as string} onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)} className='max-w-sm' />
+      <div className='flex items-center py-4 gap-4'>
+        <Input placeholder='Filter emails...' value={table.getColumn('email')?.getFilterValue() as string} onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)} className='max-w-full' />
         <div className='ml-auto'>
-          <Button variant='outline' className='me-2'>
-            <Link href={route(routeModule + '.create')}>{t('button.create')}</Link>
-          </Button>
-          <Button variant='outline' className='me-2'>
-            <Link href={route(routeModule + '.delete')}>{t('button.delete_multiple')}</Link>
-          </Button>
+          {filter &&
+            filter?.map(filter => (
+              <button>
+                {t(`filters.${filter.name}`)}: {filter.value}
+                <Button variant='outline' className='text-xs text-gray-500 hover:text-gray-700'>
+                  Remove
+                </Button>
+              </button>
+            ))}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='outline'>Columns</Button>

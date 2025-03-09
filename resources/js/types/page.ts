@@ -66,4 +66,10 @@ export type Relationships_view = Record<
 export type TablePageView = {
   filter?: []
   columns: ColumnTable[]
+  title: string
+  plugins?: { name: string; label?: string; type: string }[]
+}
+
+export type ExportPage = {
+  title: string
 }

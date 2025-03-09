@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryProductController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -14,46 +16,48 @@ Route::name('admin.')->group(function () {
         'display_name' => 'dashboard',
     ]);
 
-    Route::module('users', UserController::class, [
+    Route::module(UserController::class, [
         'name' => 'user',
         'index' => [
             'sidebar' => [
                 'group' => 'users',
                 'display_name' => 'users',
             ],
-        ]
+            'breadcrumbs' => 'user',
+        ],
     ]);
 
-    Route::prefix('setting')->name('setting.')->group(function () {
-        Route::get('system', function () {
-            return Inertia::render('Settings/System');
-        })->name('system')->defaults('sidebar', [
-            'group' => 'settings',
-            'display_name' => 'system',
-        ]);
-    });
 
-    Route::module('roles', RoleController::class, [
-        'name' => 'role',
-        'create' => [
+    // Route::module(RoleController::class, [
+    //     'name' => 'role',
+    //     'create' => [
+    //         'sidebar' => [
+    //             'group' => 'settings',
+    //             'display_name' => 'roles',
+    //         ],
+    //     ]
+    // ]);
+
+    Route::module(ProductController::class, [
+        'name' => 'product',
+        'index' => [
             'sidebar' => [
-                'group' => 'settings',
-                'display_name' => 'roles',
+                'group' => 'product',
+                'display_name' => 'product',
             ],
         ]
     ]);
 
-    Route::get('file-managers', [SiteController::class, 'fileManagers'])->name('file-managers')->setSidebar('file-managers');
-});
-
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+    Route::module(CategoryProductController::class, [
+        'name' => 'category_product',
+        'index' => [
+            'sidebar' => [
+                'group' => 'product',
+                'display_name' => 'category_product',
+            ],
+        ]
     ]);
+    Route::get('file-managers', [SiteController::class, 'fileManagers'])->name('file-managers')->setSidebar('file-managers');
 });
 
 

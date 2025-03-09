@@ -1,6 +1,6 @@
 {
   "_readme": ["This file locks the dependencies of your project to a known state", "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies", "This file is @generated automatically"],
-  "content-hash": "80faf1c3df1a28077fe05eb1849c80a6",
+  "content-hash": "ed004b4e5a32f626e499d297cdee92ec",
   "packages": [
     {
       "name": "brick/math",
@@ -174,6 +174,71 @@
         "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
       },
       "time": "2024-07-08T12:26:09+00:00"
+    },
+    {
+      "name": "diglactic/laravel-breadcrumbs",
+      "version": "v9.0.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/diglactic/laravel-breadcrumbs.git",
+        "reference": "88e8f01e013e811215770e27b40a74014c28f2c4"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/diglactic/laravel-breadcrumbs/zipball/88e8f01e013e811215770e27b40a74014c28f2c4",
+        "reference": "88e8f01e013e811215770e27b40a74014c28f2c4",
+        "shasum": ""
+      },
+      "require": {
+        "facade/ignition-contracts": "^1.0",
+        "laravel/framework": "^8.0 || ^9.0 || ^10.0 || ^11.0",
+        "php": "^7.3 || ^8.0"
+      },
+      "conflict": {
+        "davejamesmiller/laravel-breadcrumbs": "*"
+      },
+      "require-dev": {
+        "orchestra/testbench": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+        "php-coveralls/php-coveralls": "^2.7",
+        "phpunit/phpunit": "^9.5 || ^10.5",
+        "spatie/phpunit-snapshot-assertions": "^4.2 || ^5.1"
+      },
+      "type": "library",
+      "extra": {
+        "laravel": {
+          "aliases": {
+            "Breadcrumbs": "Diglactic\\Breadcrumbs\\Breadcrumbs"
+          },
+          "providers": ["Diglactic\\Breadcrumbs\\ServiceProvider"]
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Diglactic\\Breadcrumbs\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["MIT"],
+      "authors": [
+        {
+          "name": "Sheng Slogar",
+          "email": "sheng@diglactic.com",
+          "role": "Maintainer"
+        },
+        {
+          "name": "Dave James Miller",
+          "email": "dave@davejamesmiller.com",
+          "role": "Original Creator"
+        }
+      ],
+      "description": "A simple Laravel-style way to create breadcrumbs.",
+      "homepage": "https://github.com/diglactic/laravel-breadcrumbs",
+      "keywords": ["laravel"],
+      "support": {
+        "issues": "https://github.com/diglactic/laravel-breadcrumbs/issues",
+        "source": "https://github.com/diglactic/laravel-breadcrumbs/tree/v9.0.0"
+      },
+      "time": "2024-03-12T00:42:39+00:00"
     },
     {
       "name": "doctrine/deprecations",
@@ -483,6 +548,53 @@
         }
       ],
       "time": "2024-12-27T00:36:43+00:00"
+    },
+    {
+      "name": "facade/ignition-contracts",
+      "version": "1.0.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/facade/ignition-contracts.git",
+        "reference": "3c921a1cdba35b68a7f0ccffc6dffc1995b18267"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/facade/ignition-contracts/zipball/3c921a1cdba35b68a7f0ccffc6dffc1995b18267",
+        "reference": "3c921a1cdba35b68a7f0ccffc6dffc1995b18267",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^7.3|^8.0"
+      },
+      "require-dev": {
+        "friendsofphp/php-cs-fixer": "^v2.15.8",
+        "phpunit/phpunit": "^9.3.11",
+        "vimeo/psalm": "^3.17.1"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Facade\\IgnitionContracts\\": "src"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["MIT"],
+      "authors": [
+        {
+          "name": "Freek Van der Herten",
+          "email": "freek@spatie.be",
+          "homepage": "https://flareapp.io",
+          "role": "Developer"
+        }
+      ],
+      "description": "Solution contracts for Ignition",
+      "homepage": "https://github.com/facade/ignition-contracts",
+      "keywords": ["contracts", "flare", "ignition"],
+      "support": {
+        "issues": "https://github.com/facade/ignition-contracts/issues",
+        "source": "https://github.com/facade/ignition-contracts/tree/1.0.2"
+      },
+      "time": "2020-10-16T08:27:54+00:00"
     },
     {
       "name": "fruitcake/php-cors",
@@ -3327,6 +3439,77 @@
         }
       ],
       "time": "2025-02-05T15:42:48+00:00"
+    },
+    {
+      "name": "spatie/laravel-translatable",
+      "version": "6.11.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/spatie/laravel-translatable.git",
+        "reference": "032d85b28de315310dab2048b857016f1194f68b"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/032d85b28de315310dab2048b857016f1194f68b",
+        "reference": "032d85b28de315310dab2048b857016f1194f68b",
+        "shasum": ""
+      },
+      "require": {
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "php": "^8.0",
+        "spatie/laravel-package-tools": "^1.11"
+      },
+      "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "mockery/mockery": "^1.4",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+        "pestphp/pest": "^1.20|^2.0|^3.0"
+      },
+      "type": "library",
+      "extra": {
+        "aliases": {
+          "Translatable": "Spatie\\Translatable\\Facades\\Translatable"
+        },
+        "laravel": {
+          "providers": ["Spatie\\Translatable\\TranslatableServiceProvider"]
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Spatie\\Translatable\\": "src"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": ["MIT"],
+      "authors": [
+        {
+          "name": "Freek Van der Herten",
+          "email": "freek@spatie.be",
+          "homepage": "https://spatie.be",
+          "role": "Developer"
+        },
+        {
+          "name": "Sebastian De Deyne",
+          "email": "sebastian@spatie.be",
+          "homepage": "https://spatie.be",
+          "role": "Developer"
+        }
+      ],
+      "description": "A trait to make an Eloquent model hold translations",
+      "homepage": "https://github.com/spatie/laravel-translatable",
+      "keywords": ["eloquent", "i8n", "laravel-translatable", "model", "multilingual", "spatie", "translate"],
+      "support": {
+        "issues": "https://github.com/spatie/laravel-translatable/issues",
+        "source": "https://github.com/spatie/laravel-translatable/tree/6.11.4"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/spatie",
+          "type": "github"
+        }
+      ],
+      "time": "2025-02-20T15:51:22+00:00"
     },
     {
       "name": "spatie/laravel-typescript-transformer",

@@ -89,7 +89,7 @@ export function LoginForm({ className, submit, ...props }: PropsLoginForm) {
             </div>
           </Form>
           <div className='relative hidden bg-muted md:block'>
-            <img src='/placeholder.svg' alt='Image' className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale' />
+            <img src='image-login.jpg' alt='Image' className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale' />
           </div>
         </CardContent>
       </Card>

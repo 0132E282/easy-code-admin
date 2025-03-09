@@ -2,8 +2,11 @@
 
 namespace ND\Core\Services;
 
+use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Routing\Route as Routing;
 use Illuminate\Support\Facades\Route as FacadesRoute;
+use Illuminate\Support\Str;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 class RouteMacros
 {
@@ -16,27 +19,47 @@ class RouteMacros
 
     static function registerModule()
     {
-        FacadesRoute::macro('module', function ($prefix, $controller, $options = []) {
-            FacadesRoute::prefix($prefix)
-                ->name(!empty($options['name']) ? $options['name'] . '.' : $prefix . '.')
-                ->group(function () use ($controller, $options) {
-                    FacadesRoute::get('/', [$controller, 'index'])
-                        ->setSidebar(...$options['index']['sidebar'] ?? [null, null])
-                        ->name('index');
+        FacadesRoute::macro('module', function ($controller, $options = []) {
+            $controller =   new  $controller();
+            $nameModel = property_exists($controller, 'model') ? strtolower(class_basename($controller->model)) : null;
+            $routeName = !empty($options['name']) ? $options['name'] : $nameModel;
+            $prefix =  Str::snake(Str::plural($nameModel), '-');
 
-                    FacadesRoute::match(['get', 'post'], 'create', [$controller, request()->isMethod('post') ? 'create' : 'formAction'])
-                        ->setSidebar(...$options['create']['sidebar'] ?? [null, null])
-                        ->name('create');
 
-                    FacadesRoute::match(['get', 'put'], '{id}', [$controller, request()->isMethod('put') ? 'edit' : 'formAction'])
-                        ->setSidebar(...$options['edit']['sidebar'] ?? [null, null])
-                        ->where('id', '[0-9]+')
-                        ->name('edit');
+            FacadesRoute::prefix($prefix)->name($routeName . '.')->group(function () use ($controller, $options, $routeName, $nameModel) {
+                FacadesRoute::get('/', [get_class($controller), 'index'])
+                    ->setSidebar(...$options['index']['sidebar'] ?? [null, null])
+                    ->name('index');
 
-                    FacadesRoute::delete('delete/{id?}', [$controller, 'delete'])
-                        ->where('id', '[0-9]+')
-                        ->name('delete');
+                FacadesRoute::match(['get', 'post'], 'create', [get_class($controller), request()->isMethod('post') ? 'create' : 'formAction'])
+                    ->setSidebar(...$options['create']['sidebar'] ?? [null, null])
+                    ->name('create');
+
+                FacadesRoute::match(['get', 'put'], '{id}', [get_class($controller), request()->isMethod('put') ? 'edit' : 'formAction'])
+                    ->setSidebar(...$options['edit']['sidebar'] ?? [null, null])
+                    ->where('id', '[0-9]+')
+                    ->name('edit');
+
+                FacadesRoute::delete('delete/{id?}', [get_class($controller), 'delete'])
+                    ->where('id', '[0-9]+')
+                    ->name('delete');
+
+                // **Đăng ký Breadcrumbs**
+                Breadcrumbs::for("admin.$routeName.index", function (BreadcrumbTrail $trail) use ($routeName, $controller) {
+                    $trail->push($controller->view['index']['title'] ?? "admin_$routeName" . "_index", route("admin.$routeName.index"));
                 });
+
+                Breadcrumbs::for("admin.$routeName.create", function (BreadcrumbTrail $trail) use ($routeName, $controller) {
+                    $trail->parent("admin.$routeName.index");
+                    $trail->push($controller->view['form']['title'] ?? "admin_$routeName" . "_create", route("admin.$routeName.create"));
+                });
+
+                Breadcrumbs::for("admin.$routeName.edit", function (BreadcrumbTrail $trail, $param) use ($routeName) {
+                    $id = $param['id'];
+                    $trail->parent("admin.$routeName.index");
+                    $trail->push($routeName . ' ' . $id, route("admin.$routeName.edit", $id));
+                });
+            });
         });
     }
 

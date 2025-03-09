@@ -27,7 +27,7 @@ class RoleController extends Controller
             $data->permissions = $data->permissions;
         }
         $roles = Role::all();
-        return Inertia::render('Roles/Form-action', ['permissions' => $permissions, 'roles' => $roles, 'data_detail' => $data]);
+        return Inertia::render('Roles/Form-pages', ['permissions' => $permissions, 'roles' => $roles, 'data_detail' => $data]);
     }
     function create(Request $request)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
@@ -42,6 +43,7 @@ class HandleInertiaRequests extends Middleware
                 'prefix' => trim(Route::getCurrentRoute()->getPrefix(), '/'),
             ],
             'sidebar' => Route::getSidebar(),
+            'breadcrumbs' => Breadcrumbs::exists(Route::currentRouteName()) ? Breadcrumbs::generate(Route::currentRouteName(), Route::current()->parameters()) : null,
         ];
     }
 }

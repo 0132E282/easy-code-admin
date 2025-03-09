@@ -3,30 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use ND\Core\Traits\CrudActionAdmin;
+use ND\Core\Traits\HasCrudAction;
 
 class UserController extends Controller
 {
-    use CrudActionAdmin;
+    use HasCrudAction;
     public $model = User::class;
 
     public $relationships = ['roles'];
     public $search = ['name', 'email'];
 
-    public $index = [
-        'columns' => ['name', 'email', 'created_at'],
-        'filter' => [
-            'created_at' => ['type' => 'date_range'],
-        ],
-        'views' => [
-            'page' => 'table',
-        ]
+    public $plugins = [
+        'export' => ['id' => 'Id', 'photo_url' => 'hình ảnh', 'name' => 'tên', 'email' => 'email', 'roles' => 'quyền'],
+        'import' => 'all',
     ];
 
-    public $form = [
-        'relationships' => ['roles'],
-        'views' => [
+    public $view = [
+        'index' => [
+            'page' => 'table',
+            'title' => 'Quản lý người dùng',
+            'columns' => ['name', 'email', 'created_at'],
+            'filter' => [
+                'created_at' => ['type' => 'date_range'],
+            ],
+            'actions' => [
+                [
+                    'action' => 'export',
+                    'label' => 'Xuất dữ liệu',
+                    'icon' => 'download',
+                ],
+                [
+                    'action' => 'import',
+                    'label' => 'Nhập dữ liệu',
+                ],
+            ],
+
+        ],
+
+        'form' =>  [
             'page' => 'form',
+            'title' => 'Tạo người dùng',
             'container' => 'ms',
             'sections' => [
                 [
@@ -56,5 +72,6 @@ class UserController extends Controller
                 // ]
             ]
         ],
+
     ];
 }
